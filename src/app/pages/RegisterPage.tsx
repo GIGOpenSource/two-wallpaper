@@ -3,11 +3,12 @@ import { App } from 'antd';
 import { Link, useNavigate, useLocation } from 'react-router';
 import { Mail, Lock, UserPlus, Eye, EyeOff, Info, ArrowLeft } from 'lucide-react';
 import { ApiError } from '../../api/request';
-import { registerUser } from '../../api/auth';
+import { extractApiUserId, registerUser } from '../../api/auth';
 import { BottomNav } from '../components/BottomNav';
 import { motion } from 'motion/react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { trackUserRegister } from '../analytics/firebaseTracking';
 
 export default function RegisterPage() {
   const { message } = App.useApp();
@@ -76,7 +77,8 @@ export default function RegisterPage() {
         return;
       }
 
-      // 注册成功
+      // 注册成功：上报 Firebase user_register（带会话首次落地来源）
+      trackUserRegister(extractApiUserId(response));
       message.success(t.register.registerSuccess);
       navigate('/login');
     } catch (error) {

@@ -7,6 +7,8 @@ import { WallpaperGrid } from '../components/WallpaperGrid';
 import { currentUser } from '../mockData';
 import { trackAndRunDetailShare } from '../analytics/detailPageShareTrack';
 import { umengclick } from '../analytics/aplusTracking';
+import { sendDetailPagePV, trackWallpaperDownload } from '../analytics/firebaseTracking';
+import { patchSeoWeekFromDetail } from '../analytics/seoTrafficAttribution';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useGuessYouLikeRelated } from '../hooks/useGuessYouLikeRelated';
 import { useWallpaperDetailFromRoute } from '../hooks/useWallpaperDetailFromRoute';
@@ -92,12 +94,24 @@ export default function WallpaperDetailPage() {
             description: seoItem.seo_description,
             keywords: seoItem.seo_keywords,
           });
+          const seoWeek =
+            typeof (seoItem as { seo_week?: unknown }).seo_week === 'string'
+              ? (seoItem as { seo_week: string }).seo_week
+              : undefined;
+          // 回填会话 seo_week，供后续下载/注册事件使用
+          patchSeoWeekFromDetail(seoWeek);
         }
       })
       .catch((err) => {
         console.error('❌ [WallpaperDetailPage] 获取SEO数据失败:', err);
       });
   }, [id, seoData]); // 依赖 seoData 来防止重复请求
+
+  // 详情页手动 PV（Firebase），附带会话首次落地归因参数
+  useEffect(() => {
+    if (!wallpaper?.id) return;
+    sendDetailPagePV(wallpaper.id);
+  }, [wallpaper?.id]);
 
   // 判断是否是自己的壁纸
   const isOwnWallpaper = useMemo(() => {
@@ -149,6 +163,7 @@ export default function WallpaperDetailPage() {
         setDownloadNotice({ open: true, message: t.wallpaperDetail.downloadFailed });
       } else if (result.status === 'blob') {
         umengclick('download_success');
+        trackWallpaperDownload(wallpaper.id);
       } else {
         setDownloadNotice({
           open: true,
@@ -502,6 +517,7 @@ export default function WallpaperDetailPage() {
             if (url) {
               openImageUrlInNewTab(url);
               umengclick('download_success');
+              trackWallpaperDownload(wallpaper.id);
             }
           }}
         />

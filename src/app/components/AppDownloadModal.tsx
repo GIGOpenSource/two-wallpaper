@@ -22,8 +22,8 @@ export function AppDownloadModal({ visible, onClose }: AppDownloadModalProps) {
     }, 200);
   };
 
-  const googlePlayUrl = 'https://www.baidu.com';
-  const appStoreUrl = 'https://www.baidu.com';
+  const googlePlayUrl = 'https://play.google.com/store/apps/details?id=com.gig.markwallpapers';
+  const appStoreUrl = 'https://apps.apple.com/cn/app/Mark Wallpapers - HD/id6791515308';
 
   const qrCodeSize = 'square';
 
