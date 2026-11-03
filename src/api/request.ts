@@ -41,6 +41,8 @@ const languageCodeMap: Record<string, string> = {
   'ko': 'ko',
   'es': 'es',
   'fr': 'fr',
+  'pt': 'pt',
+  'id': 'id',
 };
 
 /** 线上资源域名（拼接接口返回的相对图片地址等） */

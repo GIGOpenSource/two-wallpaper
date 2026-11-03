@@ -29,6 +29,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { App, Modal } from 'antd';
 import { deleteWallpaper, toggleFollowUser, getUserProfile } from '../../api/wallpaper';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 // 用户数据类型
 interface FollowUser {
@@ -340,7 +341,7 @@ export default function ProfilePage() {
         <div className={`px-4 ${shouldShowReturnButton ? 'pt-20' : 'pt-8'} pb-10`}>
           <div className="flex items-start gap-4 mb-8">
             <div className="w-20 h-20 bg-card/20 backdrop-blur-sm rounded-full overflow-hidden border-4 border-white/30">
-              <img
+              <ImageWithFallback
                 src={profile.avatar_url || profile.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.nickname || profile.username || 'UN')}`}
                 alt={profile.nickname || profile.username}
                 className="w-full h-full object-cover"
@@ -636,7 +637,7 @@ export default function ProfilePage() {
                     <div
                       className="w-12 h-12 rounded-full overflow-hidden bg-muted flex-shrink-0 ring-2 ring-gray-100 hover:ring-blue-300 transition-all"
                     >
-                      <img
+                      <ImageWithFallback
                         src={user.avatar_url || user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent((user.nickname || user.username || 'UN') as string)}`}
                         alt={user.nickname || user.username}
                         className="w-full h-full object-cover"
@@ -715,7 +716,7 @@ export default function ProfilePage() {
                     <div
                       className="w-12 h-12 rounded-full overflow-hidden bg-muted flex-shrink-0 ring-2 ring-gray-100 hover:ring-blue-300 transition-all"
                     >
-                      <img
+                      <ImageWithFallback
                         src={user.avatar_url || user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent((user.nickname || user.username || 'UN') as string)}`}
                         alt={user.nickname || user.username}
                         className="w-full h-full object-cover"

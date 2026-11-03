@@ -16,6 +16,7 @@ import { getSeoTdk } from '../../api/wallpaper';
 import { analytics } from '../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import { getDeviceType } from '../utils/device';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 export default function DesktopHomePage() {
   const { t } = useLanguage();
@@ -187,7 +188,7 @@ export default function DesktopHomePage() {
                             className="flex-shrink-0 w-full snap-center"
                           >
                             <div className="relative aspect-[21/9] overflow-hidden">
-                              <img
+                              <ImageWithFallback
                                 src={wallpaper.imageUrl}
                                 alt={wallpaper.title}
                                 className="w-full h-full object-cover"

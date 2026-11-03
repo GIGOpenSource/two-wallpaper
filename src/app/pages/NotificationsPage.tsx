@@ -11,6 +11,7 @@ import { App, Modal } from 'antd';
 import { getAuthToken } from '../../api/request';
 import { BottomNav } from '../components/BottomNav';
 import { useLanguage } from '../contexts/LanguageContext';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 /**
  * 辅助函数：处理带参数的翻译
@@ -356,13 +357,10 @@ export default function MobileNotificationsPage() {
                     <div className="flex gap-3">
                       {/* 头像 */}
                       {notification.sender?.avatar_url ? (
-                        <img
+                        <ImageWithFallback
                           src={notification.sender.avatar_url}
                           alt={notification.sender.nickname}
                           className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = '/default-avatar.png';
-                          }}
                         />
                       ) : (
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">

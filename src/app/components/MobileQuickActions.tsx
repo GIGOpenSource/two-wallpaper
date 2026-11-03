@@ -59,6 +59,7 @@ export const MobileQuickActions: React.FC<MobileQuickActionsProps> = ({
     { code: 'es', name: 'Español', flag: 'ES' },
     { code: 'fr', name: 'Français', flag: 'FR' },
     { code: 'pt', name: 'Português', flag: 'PT' },
+    { code: 'id', name: 'Bahasa Indonesia', flag: 'ID' },
   ];
 
   const currentLanguage = languageOptions.find((lang) => lang.code === language);
@@ -148,7 +149,7 @@ export const MobileQuickActions: React.FC<MobileQuickActionsProps> = ({
                     key={lang.code}
                     onClick={(e) => {
                       e.stopPropagation();
-                      setLanguage(lang.code as 'zh-CN' | 'en' | 'ja' | 'ko' | 'es' | 'fr' | 'pt');
+                      setLanguage(lang.code as 'zh-CN' | 'en' | 'ja' | 'ko' | 'es' | 'fr' | 'pt' | 'id');
                       setIsOpen(false);
                     }}
                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${

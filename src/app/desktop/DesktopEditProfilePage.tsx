@@ -8,6 +8,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useUserProfile } from '../hooks/useUserProfile';
 import { updateUserProfile, uploadAvatar } from '../../api/wallpaper';
 import { motion } from 'motion/react';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 export default function DesktopEditProfilePage() {
   const { message } = App.useApp();
@@ -155,7 +156,7 @@ export default function DesktopEditProfilePage() {
               <div className="flex items-start gap-8">
                 <div className="relative">
                   <div className="w-32 h-32 bg-muted rounded-full overflow-hidden ring-4 ring-gray-100">
-                    <img
+                    <ImageWithFallback
                       src={avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(nickname || 'UN')}`}
                       alt="Avatar"
                       className="w-full h-full object-cover"

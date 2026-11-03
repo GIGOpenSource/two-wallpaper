@@ -8,6 +8,7 @@ import { WALLPAPER_LIST_NAV_KEY } from '../types/wallpaperListNav';
 import { useWallpaperListCardTracking } from '../hooks/useWallpaperListCardTracking';
 import { wallpaperListCoverUrl } from '../utils/wallpaperApiMap';
 import { useLanguage } from '../contexts/LanguageContext';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 
 interface DesktopWallpaperGridProps {
   wallpapers: Wallpaper[];
@@ -137,7 +138,7 @@ function DesktopWallpaperCard({
             className={`relative ${aspectRatio} rounded-xl overflow-hidden bg-muted group shadow-md cursor-not-allowed`}
             onClick={handleRejectedClick}
           >
-            <img
+            <ImageWithFallback
               src={wallpaperListCoverUrl(wallpaper)}
               alt={wallpaper.title}
               className="w-full h-full object-cover"
@@ -262,7 +263,7 @@ function DesktopWallpaperCard({
             onClick={onClickTrack}
           >
             <div className={`relative ${aspectRatio} rounded-xl overflow-hidden bg-muted group shadow-md hover:shadow-xl transition-shadow`}>
-              <img
+              <ImageWithFallback
                 src={wallpaperListCoverUrl(wallpaper)}
                 alt={wallpaper.title}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"

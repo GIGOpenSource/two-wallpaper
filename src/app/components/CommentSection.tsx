@@ -9,6 +9,7 @@ import { Send, Heart, Trash2 } from 'lucide-react';
 import { App, Modal } from 'antd';
 import { useLanguage } from '../contexts/LanguageContext';
 import type { Language } from '../locales/translations';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 
 interface CommentSectionProps {
   wallpaperId: string | number;
@@ -355,13 +356,10 @@ const CommentItem = React.memo(function CommentItem({
       {/* 用户头像 */}
       <div className="flex-shrink-0 cursor-pointer" onClick={handleAvatarClick}>
         {avatarUrl ? (
-          <img
+          <ImageWithFallback
             src={avatarUrl}
             alt={username}
             className="w-10 h-10 rounded-full object-cover hover:opacity-80 transition-opacity"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = '/default-avatar.png';
-            }}
           />
         ) : (
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold hover:opacity-80 transition-opacity">

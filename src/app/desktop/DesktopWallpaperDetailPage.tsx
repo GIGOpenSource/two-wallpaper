@@ -18,6 +18,8 @@ import { recordWallpaperDownload, recordWallpaperCollect, getWallpaperSeoTdk } f
 import { getAuthToken } from '../../api/request';
 import { DownloadNoticeAlert } from '../components/DownloadNoticeAlert';
 import CommentSection from '../components/CommentSection';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+import { WallpaperNotFoundView } from '../components/WallpaperNotFoundView';
 import { Helmet } from 'react-helmet-async';
 import {
   Download,
@@ -40,7 +42,7 @@ export default function DesktopWallpaperDetailPage() {
   const { isCollapsed } = useSidebar();
   const { id } = useParams();
   const navigate = useNavigate();
-  const { wallpaper, loading, error, refresh } = useWallpaperDetailFromRoute();
+  const { wallpaper, loading, error, notFoundReason, refresh } = useWallpaperDetailFromRoute();
   const { relatedWallpapers, loadingRelated } = useGuessYouLikeRelated(id);
   const { comments, total: commentTotal } = useWallpaperComments(id || '');
   const { profile: currentProfile } = useUserProfile();
@@ -67,6 +69,8 @@ export default function DesktopWallpaperDetailPage() {
     getWallpaperSeoTdk(id)
       .then((response) => {
         console.log('✅ [DesktopWallpaperDetailPage] SEO数据返回:', response);
+        // 协议：code=404 时不要当成功 TDK
+        if ((response as { code?: number })?.code === 404) return;
         const seoItem = response.data;
         if (seoItem) {
           setSeoData({
@@ -105,23 +109,7 @@ export default function DesktopWallpaperDetailPage() {
   }
 
   if (!wallpaper || error) {
-    return (
-      <div className="flex min-h-screen bg-background">
-        <DesktopSidebar />
-        <div className={`flex-1 transition-all duration-300 flex items-center justify-center ${isCollapsed ? 'ml-16' : 'ml-64'}`}>
-          <div className="text-center">
-            <p className="text-muted-foreground mb-4">{t.wallpaperDetail.wallpaperNotFound}</p>
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-            >
-              {t.common.back}
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+    return <WallpaperNotFoundView reason={notFoundReason} />;
   }
 
   const handleDownload = async () => {
@@ -283,7 +271,7 @@ export default function DesktopWallpaperDetailPage() {
                     className="relative aspect-video bg-[#101828] dark:bg-[#0f1f36] cursor-pointer"
                     onClick={() => setShowPreview(true)}
                   >
-                    <img
+                    <ImageWithFallback
                       src={wallpaper.imageUrl}
                       alt={wallpaper.title}
                       className="w-full h-full object-contain"
@@ -416,7 +404,7 @@ export default function DesktopWallpaperDetailPage() {
                       className="flex items-center gap-3 hover:bg-background p-3 rounded-lg transition-colors w-full text-left"
                     >
                       {wallpaper.uploader.avatar ? (
-                        <img
+                        <ImageWithFallback
                           src={wallpaper.uploader.avatar}
                           alt={wallpaper.uploader.username}
                           className="w-12 h-12 rounded-full object-cover"
@@ -574,7 +562,7 @@ export default function DesktopWallpaperDetailPage() {
           onClick={() => setShowPreview(false)}
         >
           <div className="relative">
-            <img
+            <ImageWithFallback
               src={wallpaper.imageUrl}
               alt={wallpaper.title}
               className="max-w-full max-h-[calc(100vh-2rem)] object-contain"

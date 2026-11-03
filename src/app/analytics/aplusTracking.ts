@@ -11,6 +11,8 @@ const languageCodeMap: Record<string, string> = {
   'ko': 'ko',
   'es': 'es',
   'fr': 'fr',
+  'pt': 'pt',
+  'id': 'id',
 };
 
 export function formatDateTime(timestamp: number = Date.now()): string {

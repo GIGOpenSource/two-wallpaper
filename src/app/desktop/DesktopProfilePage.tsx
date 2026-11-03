@@ -13,6 +13,7 @@ import { useFollowingList, useFollowersList } from '../hooks/useFollowingList';
 import { getAuthToken } from '../../api/request';
 import { App, Modal } from 'antd';
 import { deleteWallpaper, toggleFollowUser, getUserProfile } from '../../api/wallpaper';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 // 用户数据类型
 interface FollowUser {
@@ -299,7 +300,7 @@ export default function DesktopProfilePage() {
               <div className="flex items-start mb-8">
                 <div className="flex items-center gap-6 flex-1">
                   <div className="w-20 h-20 bg-card rounded-full overflow-hidden shadow-lg">
-                    <img
+                    <ImageWithFallback
                       src={profile.avatar_url || profile.avatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(profile.nickname || profile.username || 'UN')}
                       alt={profile.nickname || profile.username}
                       className="w-full h-full object-cover"
@@ -599,7 +600,7 @@ export default function DesktopProfilePage() {
                           <div
                             className="w-14 h-14 rounded-full overflow-hidden bg-muted flex-shrink-0 ring-2 ring-gray-100 hover:ring-blue-300 transition-all"
                           >
-                            <img
+                            <ImageWithFallback
                               src={user.avatar_url || user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent((user.nickname || user.username || 'UN') as string)}`}
                               alt={user.nickname || user.username}
                               className="w-full h-full object-cover"
@@ -678,7 +679,7 @@ export default function DesktopProfilePage() {
                           <div
                             className="w-14 h-14 rounded-full overflow-hidden bg-muted flex-shrink-0 ring-2 ring-gray-100 hover:ring-blue-300 transition-all"
                           >
-                            <img
+                            <ImageWithFallback
                               src={user.avatar_url || user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent((user.nickname || user.username || 'UN') as string)}`}
                               alt={user.nickname || user.username}
                               className="w-full h-full object-cover"

@@ -19,6 +19,8 @@ import { recordWallpaperDownload, recordWallpaperCollect, getWallpaperSeoTdk } f
 import { getAuthToken } from '../../api/request';
 import { DownloadNoticeAlert } from '../components/DownloadNoticeAlert';
 import CommentSection from '../components/CommentSection';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+import { WallpaperNotFoundView } from '../components/WallpaperNotFoundView';
 import {
   Download,
   Heart,
@@ -38,7 +40,7 @@ export default function WallpaperDetailPage() {
   const { t } = useLanguage();
   const { id } = useParams();
   const navigate = useNavigate();
-  const { wallpaper, loading, error, refresh } = useWallpaperDetailFromRoute();
+  const { wallpaper, loading, error, notFoundReason, refresh } = useWallpaperDetailFromRoute();
   const { relatedWallpapers, loadingRelated } = useGuessYouLikeRelated(id);
   const { comments, total: commentTotal } = useWallpaperComments(id || '');
   const { profile: currentProfile } = useUserProfile();
@@ -81,6 +83,8 @@ export default function WallpaperDetailPage() {
     getWallpaperSeoTdk(id)
       .then((response) => {
         console.log('✅ [WallpaperDetailPage] SEO数据返回:', response);
+        // 协议：code=404 时不要当成功 TDK
+        if ((response as { code?: number })?.code === 404) return;
         const seoItem = response.data;
         if (seoItem) {
           setSeoData({
@@ -113,23 +117,7 @@ export default function WallpaperDetailPage() {
   }
 
   if (!wallpaper || error) {
-    return (
-      <div className="min-h-screen flex flex-col max-w-md mx-auto bg-background">
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center px-4">
-            <p className="text-muted-foreground mb-4">{t.wallpaperDetail.wallpaperNotFound}</p>
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-            >
-              {t.common.back}
-            </button>
-          </div>
-        </div>
-        <BottomNav />
-      </div>
-    );
+    return <WallpaperNotFoundView reason={notFoundReason} />;
   }
 
   const handleDownload = async () => {
@@ -255,7 +243,7 @@ export default function WallpaperDetailPage() {
         <div className="px-4">
           <div className="bg-card dark:bg-[#101727] dark:border dark:border-#1b3456 rounded-2xl overflow-hidden shadow-lg" onClick={() => setShowPreview(true)} >
             <div className="relative aspect-[3/4] bg-gray-900 dark:bg-[#101727]">
-              <img
+              <ImageWithFallback
                 src={wallpaper.imageUrl}
                 alt={wallpaper.title}
                 className="w-full h-full object-contain"
@@ -371,7 +359,7 @@ export default function WallpaperDetailPage() {
                   <span className="text-muted-foreground">{t.wallpaperDetail.uploader || '上传者'}</span>
                   <div className="flex items-center gap-2">
                     {wallpaper.uploader.avatar && (
-                      <img
+                      <ImageWithFallback
                         src={wallpaper.uploader.avatar}
                         alt={wallpaper.uploader.username}
                         className="w-6 h-6 rounded-full object-cover"
@@ -525,7 +513,7 @@ export default function WallpaperDetailPage() {
             onClick={() => setShowPreview(false)}
           >
             <div className="relative max-w-4xl max-h-full w-full flex items-center justify-center">
-              <img
+              <ImageWithFallback
                 src={wallpaper.imageUrl}
                 alt={wallpaper.title}
                 className="max-w-full max-h-full object-contain"

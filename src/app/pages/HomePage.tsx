@@ -21,6 +21,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { analytics } from '../utils/firebase';
 import { logEvent } from 'firebase/analytics';
 import { getDeviceType } from '../utils/device';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 export default function HomePage() {
   const { t, language, setLanguage } = useLanguage();
@@ -37,6 +38,7 @@ export default function HomePage() {
     { code: 'es', name: 'Español', flag: 'ES' },
     { code: 'fr', name: 'Français', flag: 'FR' },
     { code: 'pt', name: 'Português', flag: 'PT' },
+    { code: 'id', name: 'Bahasa Indonesia', flag: 'ID' },
   ];
 
   const currentLanguage = languageOptions.find((lang) => lang.code === language);
@@ -279,7 +281,7 @@ export default function HomePage() {
                         className="flex-shrink-0 w-full snap-center"
                       >
                         <div className="relative mx-4 aspect-[16/9] rounded-xl overflow-hidden">
-                          <img
+                          <ImageWithFallback
                             src={wallpaper.imageUrl}
                             alt={wallpaper.title}
                             className="w-full h-full object-cover"

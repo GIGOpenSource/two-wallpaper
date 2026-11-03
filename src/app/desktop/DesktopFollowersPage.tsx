@@ -5,6 +5,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Users, UserPlus } from 'lucide-react';
 import { useFollowersList } from '../hooks/useFollowingList';
 import { toggleFollowUser } from '../../api/wallpaper';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 export default function DesktopFollowersPage() {
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ export default function DesktopFollowersPage() {
                     <div className="flex items-start gap-4">
                       {/* Avatar */}
                       <div className="w-16 h-16 rounded-full overflow-hidden bg-muted flex-shrink-0 ring-2 ring-gray-100 hover:ring-blue-300 transition-all">
-                        <img
+                        <ImageWithFallback
                           src={user.avatar_url || user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.nickname || user.username || 'UN')}`}
                           alt={user.nickname || user.username || 'User'}
                           className="w-full h-full object-cover"

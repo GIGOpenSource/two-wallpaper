@@ -6,6 +6,7 @@ import type { WallpaperListNavBase } from '../types/wallpaperListNav';
 import { WALLPAPER_LIST_NAV_KEY } from '../types/wallpaperListNav';
 import { useWallpaperListCardTracking } from '../hooks/useWallpaperListCardTracking';
 import { wallpaperListCoverUrl } from '../utils/wallpaperApiMap';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 
 interface WallpaperGridProps {
   wallpapers: Wallpaper[];
@@ -86,7 +87,7 @@ function WallpaperCard({
         onClick={onClickTrack}
       >
         <div className={`relative ${aspectRatio} rounded-lg overflow-hidden bg-muted group`}>
-          <img
+          <ImageWithFallback
             src={wallpaperListCoverUrl(wallpaper)}
             alt={wallpaper.title}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
